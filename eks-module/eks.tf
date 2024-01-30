@@ -1,14 +1,14 @@
-resource "aws_eks_cluster" "cluster" {
-  name     = "project-phoenix-eks-dev"
-  version = "1.28"
-  role_arn = aws_iam_role.k8sclusterrole  .arn
+resource "aws_eks_cluster" "k8scluster" {
+  name     = local.cluster_name
+  version  = var.cluster_version
+  role_arn = aws_iam_role.k8sclusterrole.arn
 
   vpc_config {
-    subnet_ids = ["subnet-0037ea77d33152362", "subnet-0768e210a23009cd0"]
+    subnet_ids = var.subnets_ids
   }
 
   kubernetes_network_config {
-    service_ipv4_cidr = "10.2.0.0/16"
+    service_ipv4_cidr = var.services_cidr
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
@@ -19,8 +19,8 @@ resource "aws_eks_cluster" "cluster" {
   ]
 
   tags = {
-    Name = "project-phoenix-eks-dev"
-    Owner = "project-phoenix-team b"
+    Name  = local.cluster_name
+    Owner = local.owner_tag
   }
 }
 
@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "assume_role" {
 
 #IAM role for EKS cluster 
 resource "aws_iam_role" "k8sclusterrole" {
-  name               = "project-phoenix-eks-dev-iam-role"
+  name               = "${local.cluster_name}-iam-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -64,19 +64,19 @@ resource "aws_iam_role_policy_attachment" "k8sclusterrole-AmazonEKSVPCResourceCo
 # } 
 
 resource "aws_security_group" "k8scluster-sg" {
-  name        = "eks-cluster-sg-project-phoenix-eks-dev"
+  name        = "eks-cluster-sg-${local.cluster_name}"
   description = "Main security group of EKS cluster"
-  vpc_id      = " " 
+  vpc_id      = var.vpc_id
 
   ingress {
-    description =  "Allow All Self"
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    self = true
+    description = "Allow All Self"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
   }
 
-   egress {
+  egress {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -85,11 +85,11 @@ resource "aws_security_group" "k8scluster-sg" {
   }
 
   tags = {
-    "kubernetes.oi/cluster/project-phoenix-eks-dev" = "owned"
-    "aws:eks:cluster-name" = "project-phoenix-eks-dev"
-    Name =  "eks-cluster-sg-project-phoenix-eks-dev"
-  
-}
+    "kubernetes.oi/cluster/${local.cluster_name}" = "owned"
+    "aws:eks:cluster-name"                        = local.cluster_name
+    "Name"                                        = "eks-cluster-sg-${local.cluster_name}"
+
+  }
 }
 
   
