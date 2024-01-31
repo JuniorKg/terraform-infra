@@ -1,4 +1,4 @@
-module "project-phoenix-dev-eks-cluster" {
+module "project-phoenix-eks-cluster" {
   source               = "../../eks-module"
   vpc_id               = var.vpc_id
   subnets_ids          = var.subnets_ids

@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "statebucket" {
   bucket = "project-phoenix-state-bucket-dev"
 
   tags = {
-    Name        = "Terraform State bucker for Project Phoenix"
+    Name        = "Terraform State bucket for Project Phoenix"
     Environment = "Dev"
   }
   versioning {
