@@ -1,8 +1,8 @@
-  vpc_id               = "vpc-0066db5148d7f9183"
-  subnets_ids          = ["subnet-0037ea77d33152362", "subnet-0768e210a23009cd0"]
+  vpc_id               = "vpc-00c6ce06aa71d86f1"
+  subnets_ids          = ["subnet-0dc92c479492811a7", "subnet-0e1917ac6f7bb90bb"]
   cluster_version      = "1.28"
   services_cidr        = "10.2.0.0/16"
-  stage                = "dev"
+  stage                = "production"
   project              = "project-phoenix"
   workers_desired      = 1
   workers_max          = 5
