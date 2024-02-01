@@ -1,3 +1,4 @@
+name: Sample Basic Job
 on: 
   #trigger/start job when push happens to the feature branch
   push:
