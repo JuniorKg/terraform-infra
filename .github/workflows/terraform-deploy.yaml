@@ -1,5 +1,4 @@
-name: Sample Basic Job
-# Controls when the workflow will run
+name: Workflow - Deploy on multi-account AWS with Terraform
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
@@ -16,7 +15,7 @@ jobs:
     # defaults settings to apply for all the steps
     defaults:
       run:
-        working-directory: ./roots/project-phoenix-main-root
+        working-directory: ./roots/project-phoenix-main-root/
         shell: bash
 
     # Steps represent a sequence of tasks that will be executed as part of the job
