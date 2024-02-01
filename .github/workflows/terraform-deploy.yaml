@@ -20,7 +20,7 @@ jobs:
       run:
         working-directory: ./roots/project-phoenix-main-root/
         shell: bash
-    environment: ${{ (github.ref == 'refs/heads/main' && 'production') || (github.ref == 'refs/heads/staging' && 'staging') || 'dev')}}
+    environment: ${{ (github.ref == 'refs/heads/main' && 'production') || (github.ref == 'refs/heads/staging' && 'staging') || 'dev'}}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
