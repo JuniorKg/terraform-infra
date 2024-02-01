@@ -7,10 +7,12 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "feature/AM-01-tf-multi-account-code" ]
+# required permissions by GitHub Actions for assuming AWS IAM Role
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
 env:
-  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_REGION: ${{ vars.AWS_REGION }}
+  AWS_REGION: "us-east-1"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,6 +20,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4 
+        with:
+          role-to-assume: arn:aws:iam::211125699009:role/gitHubActionsIAMroleDev
+          role-session-name: GitHubActionsRoleSession
+          aws-region: ${{ env.AWS_REGION }}
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -32,9 +41,6 @@ jobs:
           tree . 
           ls 
           cat roots/project-phoenix-main-root/main.tf
-          export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY"
-          export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
-          export AWS_DEFAULT_REGION="$AWS_REGION"
           aws sts get-caller-identity
 
           
