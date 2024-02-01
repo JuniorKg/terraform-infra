@@ -1,0 +1,42 @@
+name: Sample Basic Job
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: ["feature/AM-01-tf-multi-account-code"]
+# required permissions by GitHub Actions for assuming AWS IAM Role
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+env:
+  AWS_REGION: "us-east-1"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::211125699009:role/gitHubActionsIAMroleDev
+          role-session-name: GitHubActionsRoleSession
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Initialize a new or exisiting Terraform working directory by creating initial files
+      - name: Terraform Init
+        run: terraform init -backend-config="bucket=project-phoenix-state-bucket-dev"
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        run: terraform plan -var-file="project-phoenix-dev.tfvars"
+
+      # Build infrastructure according to Terraform configuration files
+      - name: Terraform Apply
+        run: terraform apply -var-file="project-phoenix-dev.tfvars"

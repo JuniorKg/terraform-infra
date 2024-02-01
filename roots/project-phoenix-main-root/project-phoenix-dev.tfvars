@@ -4,7 +4,7 @@
   services_cidr        = "10.2.0.0/16"
   stage                = "dev"
   project              = "project-phoenix"
-  workers_desired      = 1
+  workers_desired      = 2
   workers_max          = 5
   workers_min          = 1
   workers_pricing_type = "SPOT"
