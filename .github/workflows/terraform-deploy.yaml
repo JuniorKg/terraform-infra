@@ -12,6 +12,7 @@ permissions:
   contents: read # This is required for actions/checkout
 env:
   AWS_REGION: "us-east-1"
+  ENVIRONMENT_STAGE: ${{ (github.ref == 'refs/heads/production' && 'production') || (github.ref == 'refs/heads/staging' && 'staging') || 'dev'}}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,7 +37,7 @@ jobs:
 
       # Initialize a new or exisiting Terraform working directory by creating initial files
       - name: Terraform Init
-        run: terraform init -backend-config="bucket=project-phoenix-state-bucket-dev"
+        run: terraform init -backend-config="bucket=project-phoenix-state-bucket-${ENVIRONMENT_STAGE}"
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
@@ -44,8 +45,8 @@ jobs:
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
-        run: terraform plan -var-file="project-phoenix-dev.tfvars"
+        run: terraform plan -var-file="project-phoenix-${ENVIRONMENT_STAGE}.tfvars"
 
       # Build infrastructure according to Terraform configuration files
       - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false -var-file="project-phoenix-dev.tfvars"
+        run: terraform apply -auto-approve -input=false -var-file="project-phoenix-${ENVIRONMENT_STAGE}.tfvars"
