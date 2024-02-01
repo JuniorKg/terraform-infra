@@ -1,7 +1,7 @@
 on: 
   #trigger/start job when push happens to the feature branch
   push:
-    branches: ["eature/AM-01-tf-multi-account-code"]
+    branches: ["feature/AM-01-tf-multi-account-code"]
 jobs:
   build: 
     runs-on: ubuntu-latest
