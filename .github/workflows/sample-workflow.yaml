@@ -28,3 +28,4 @@ jobs:
           tree . 
           ls 
           cat roots/project-phoenix-main-root/main.tf
+          aws sts get-caller-identity
