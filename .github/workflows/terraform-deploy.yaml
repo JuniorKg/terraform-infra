@@ -14,7 +14,7 @@ env:
   AWS_REGION: "us-east-1"
   ENVIRONMENT_STAGE: ${{ (github.ref == 'refs/heads/main' && 'production') || (github.ref == 'refs/heads/staging' && 'staging') || 'dev'}}
 jobs:
-  build:
+  deploy-terraform:
     runs-on: ubuntu-latest
     # defaults settings to apply for all the steps
     defaults:
@@ -42,6 +42,14 @@ jobs:
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
         run: terraform fmt -check
+
+      # Run automated terraform tests - just for testing purposes
+      # - name: Terratest
+      #   run: |
+      #     go mod init 
+      #     go get github.com/gruntwork-io/terratest
+      #     go get github.com/stretchr/testify
+      #     go test -v -tags=unit
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
