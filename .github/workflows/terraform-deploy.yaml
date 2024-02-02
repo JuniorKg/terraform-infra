@@ -5,7 +5,7 @@ on:
     branches: 
     - feature/**
     - staging
-    - production
+    - main
 # required permissions by GitHub Actions for assuming AWS IAM Role
 permissions:
   id-token: write # This is required for requesting the JWT
