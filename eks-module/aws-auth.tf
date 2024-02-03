@@ -4,9 +4,9 @@ data "aws_region" "current" {
 }
 #Update aws-auth configmap, to ensure additional role is added for Access Management in the k8s cluster
 resource "null_resource" "update_aws_auth" {
-    depends_on = [aws_eks_cluster.k8scluster]
+  depends_on = [aws_eks_cluster.k8scluster]
 
- provisioner "local-exec" {
+  provisioner "local-exec" {
     command = <<-EOT
     sleep 60
     aws eks update-kubeconfig --name ${local.cluster_name} --region ${data.aws_region.current.name}
@@ -18,14 +18,21 @@ resource "null_resource" "update_aws_auth" {
               - system:nodes
               rolearn: ${aws_iam_role.k8scluster_nodegroup_role.arn}
               username: system:node:{{EC2PrivateDNSName}}
-
+            - groups:
+              - system:masters
+              rolearn: arn:aws:iam::${data.aws_caller_identity.curreent.accound_id}:role/OrganizationAccountAccessRole
+              username: adminRoleUser
+            - groups:
+              - system:masters
+              rolearn: ${var.gitHubActionsAppCIrole}
+              username: GitHubActionsRoleUser
     EOF
     )"
     EOT
- }
+  }
 }
-            # This is in case if th main role will be unable to access
-            # - groups:
-            #   - system:masters
-            #   rolearn: arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/OrganizationAccountAccessRole
-            #   username: adminRoleUser
+# This is in case if th main role will be unable to access
+# - groups:
+#   - system:masters
+#   rolearn: arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/OrganizationAccountAccessRole
+#   username: adminRoleUser

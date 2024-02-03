@@ -9,3 +9,4 @@ workers_max          = 5
 workers_min          = 1
 workers_pricing_type = "SPOT"
 instance_types       = ["t3.micro"]
+gitHubActionsAppCIrole = "arn:aws:iam::211125699009:role/gitHubActionsIAMroleAppCIDev"

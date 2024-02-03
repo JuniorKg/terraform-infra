@@ -87,9 +87,9 @@ resource "aws_security_group" "k8scluster-sg" {
   tags = {
     "kubernetes.oi/cluster/${local.cluster_name}" = "owned"
     #"aws:eks:cluster-name"                        = local.cluster_name
-    "Name"                                        = "eks-cluster-sg-${local.cluster_name}"
+    "Name" = "eks-cluster-sg-${local.cluster_name}"
 
   }
 }
 
-  
+
