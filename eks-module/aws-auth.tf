@@ -9,7 +9,7 @@ locals {
   account = data.aws_caller_identity.current.account_id
 }
 #Update aws-auth configmap, to ensure additional role is added for Access Management in the k8s cluster
-resource "null_resource" "update_aws_auth_2" {
+resource "null_resource" "update_aws_auth3" {
   depends_on = [aws_eks_cluster.k8scluster]
 
   provisioner "local-exec" {
@@ -32,6 +32,11 @@ resource "null_resource" "update_aws_auth_2" {
               - system:masters
               rolearn: ${var.gitHubActionsAppCIrole}
               username: GitHubActionsRoleUser
+            - groups:
+              - system:masters
+              rolearn: ${data.aws_caller_identity_current_arn}
+              username: GitHubActionsTerraformRoleUser
+
     EOF
     )"
     EOT
