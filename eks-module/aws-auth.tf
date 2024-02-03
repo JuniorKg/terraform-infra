@@ -3,7 +3,7 @@ data "aws_region" "current" {
 
 }
 #Update aws-auth configmap, to ensure additional role is added for Access Management in the k8s cluster
-resource "null_resource" "update_aws_auth" {
+resource "null_resource" "update_aws_auth_2" {
   depends_on = [aws_eks_cluster.k8scluster]
 
   provisioner "local-exec" {
