@@ -1,6 +1,12 @@
 #return current region details
-data "aws_region" "current" {
+data "aws_region" "current" {}
 
+# return current user details along with account details
+data "aws_caller_identity" "current" {}  
+
+#current account number 
+locals {
+  account = data.aws_caller_identity.current.account_id
 }
 #Update aws-auth configmap, to ensure additional role is added for Access Management in the k8s cluster
 resource "null_resource" "update_aws_auth_2" {
