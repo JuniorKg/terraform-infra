@@ -50,5 +50,5 @@ variable "instance_types" {
 
 variable "gitHubActionsAppCIrole" {
   type = string
-  
+
 }
