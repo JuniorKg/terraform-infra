@@ -12,6 +12,7 @@ module "project-phoenix-eks-cluster" {
   workers_pricing_type   = var.workers_pricing_type
   instance_types         = var.instance_types
   gitHubActionsAppCIrole = var.gitHubActionsAppCIrole
+  gitHubActionsTerraformrole = var.gitHubActionsTerraformrole
 
 }
 

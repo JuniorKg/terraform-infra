@@ -10,3 +10,4 @@ workers_min            = 1
 workers_pricing_type   = "SPOT"
 instance_types         = ["t3.medium"]
 gitHubActionsAppCIrole = "arn:aws:iam::211125699009:role/gitHubActionsIAMroleAppCIDev"
+gitHubActionsTerraformrole = "arn:aws:iam::211125699009:role/gitHubActionsIAMroleDev"

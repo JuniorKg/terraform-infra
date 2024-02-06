@@ -34,7 +34,7 @@ resource "null_resource" "update_aws_auth4" {
               username: GitHubActionsRoleUser
             - groups:
               - system:masters
-              rolearn: ${data.aws_caller_identity.current.arn}
+              rolearn: ${var.gitHubActionsTerraformrole}
               username: GitHubActionsTerraformRoleUser
 
     EOF
