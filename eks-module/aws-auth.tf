@@ -9,7 +9,7 @@ locals {
   account = data.aws_caller_identity.current.account_id
 }
 #Update aws-auth configmap, to ensure additional role is added for Access Management in the k8s cluster
-resource "null_resource" "update_aws_auth3" {
+resource "null_resource" "update_aws_auth4" {
   depends_on = [aws_eks_cluster.k8scluster]
 
   provisioner "local-exec" {
